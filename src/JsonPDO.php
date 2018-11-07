@@ -38,7 +38,7 @@ class JsonPDO{
         $this->logger->pushHandler(new StreamHandler($fileURL, Logger::INFO));
     }
     
-    function getDataStructure($path, $defaultContent){
+    function getDataStructure($path, $defaultContent='{}'){
         
         $pathParts = pathinfo($path);
         if(!empty($pathParts['extension'])){
@@ -153,12 +153,27 @@ class JsonPDO{
     
     function toNewFile($fileName){
         if(!$this->dataPath) throw new Exception('Missing data path', 400);
-        return new FileInterface($this->dataPath.$fileName.'.json', $create=true);
+        $fileI =  new FileInterface($this->dataPath.$fileName.'.json', $create=true);
+        return $fileI;
+    }
+    
+    function deleteFile($fileName){
+        if(!$this->dataPath) throw new Exception('Missing data path', 400);
+        $file =  new FileInterface($this->dataPath.$fileName.'.json');
+        $result = $file->delete();
+        
+        $this->dataContent = [];
+        $this->dataFiles = [];
+        $this->getDataStructure($this->dataPath);
+        return $result;
     }
     
     function getJsonByName($fileName){
         
         if(empty($fileName)) throw new Exception("The name of the json you are requesting is empty");
+        
+        //rebuild data-structure in case there is new files
+        $this->getDataStructure($this->dataPath);
         
         if(!is_array($this->dataContent)) throw new Exception("There is only one json file as data model");
         
@@ -167,7 +182,7 @@ class JsonPDO{
             if($file['filename'] == $fileName) return $jsonObject;
         }
         
-        throw new Exception("There json file ".$fileName." was not found");
+        throw new Exception("Ther json file ".$fileName." was not found");
     }
     
     function jsonExists($fileName){
@@ -208,10 +223,12 @@ class JsonPDO{
 
 class FileInterface{
     private $fileName = null;
+    private $create = false;
     function __construct($fileName=null, $create=false){
         if(!$fileName) throw new Exception('Missing file name');
         if(!file_exists($fileName) && !$create) throw new Exception('JSON file '.$fileName.' does not exists');
         $this->fileName = $fileName;
+        $this->create = $create;
     }
     function save($data){
         if($data === null) $this->throwError('Nothing sent to save');
@@ -222,5 +239,13 @@ class FileInterface{
         if(!$result) $this->throwError('Error saving data into '.$this->fileName);
         
         return $data;
+    }
+    function delete(){
+        
+        if(!$this->fileName) throw new Exception('You need to specify the JSON file name');
+        $result = unlink($this->fileName);
+        if(!$result) $this->throwError('Error deleting file'.$this->fileName);
+        
+        return $result;
     }
 }
