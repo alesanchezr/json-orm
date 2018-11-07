@@ -1,8 +1,7 @@
 # JSON PDO
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alesanchezr/json-orm/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/emmanuelroecker/php-linkchecker/?branch=master)
-[![Build Status](https://travis-ci.org/alesanchezr/json-orm.svg?branch=master)](https://travis-ci.org/emmanuelroecker/php-linkchecker)
-[![Coverage Status](https://coveralls.io/repos/github/alesanchezr/json-orm/badge.svg?branch=master)](https://coveralls.io/github/emmanuelroecker/php-linkchecker?branch=master)
+[![Build Status](https://travis-ci.org/alesanchezr/json-orm.svg?branch=master)](https://travis-ci.org/alesanchezr/json-orm)
+[![Coverage Status](https://coveralls.io/repos/github/alesanchezr/json-orm/badge.svg?branch=master)](https://coveralls.io/github/alesanchezr/json-orm?branch=master)
 
 Very simple JSON file based database manager.
 
@@ -28,12 +27,26 @@ Install dependencies :
 php composer.phar install
 ```
 
-## How to check links in html / json files ?
+## How use it?
 
 ```php
 require 'vendor/autoload.php';
 
 use JsonPDO\JsonPDO;
+
+//create a database pointing to a file or folder
+$orm = new JsonPDO('./tests/data/');
+
+//get any file from the data folder
+$content = $orm->getJsonByName('countries');
+
+//save some data into a json file
+$someData = [ "ve" => "venezuela" ];
+$file = $orm->toNewFile('countries');
+$file->save($content);
+
+//delete a json file
+$orm->deleteFile('countries');
 
 ```
 
