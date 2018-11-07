@@ -1,5 +1,6 @@
 {
     "name": "alesanchezr/json-orm",
+    "version": "0.0.1",
     "description": "PHP Engine for a simple JSON file based database.",
     "type": "library",
     "keywords": ["orm","json","json-orm", "object relationship manager"],
