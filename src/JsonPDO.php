@@ -38,7 +38,7 @@ class JsonPDO{
         $this->logger->pushHandler(new StreamHandler($fileURL, Logger::INFO));
     }
     
-    function getDataStructure($path, $defaultContent){
+    function getDataStructure($path, $defaultContent=[]){
         
         $pathParts = pathinfo($path);
         if(!empty($pathParts['extension']) && isset($pathParts['extension']) && $pathParts['extension'] == 'json'){

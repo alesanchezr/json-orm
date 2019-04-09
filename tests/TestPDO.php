@@ -1,10 +1,9 @@
 <?php
-declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use JsonPDO\JsonPDO;
 
-final class EmailTest extends TestCase
+class EmailTest extends TestCase
 {
     public function testFindsJSON(){
         $pdo = new JsonPDO('./tests/data');
@@ -30,7 +29,6 @@ final class EmailTest extends TestCase
         
         $file = $pdo->toNewFile('countries');
         $file->save($content);
-
         $phones = $pdo->getJsonByName('countries');
         $this->assertTrue($content["ve"] == $phones["ve"]);
         
@@ -47,5 +45,4 @@ final class EmailTest extends TestCase
         $this->expectException(Exception::class);
         $data = $pdo->getJsonByName('countries');
     }
-
 }
