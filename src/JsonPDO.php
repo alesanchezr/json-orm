@@ -249,4 +249,7 @@ class FileInterface{
         
         return $result;
     }
+    function throwError($msg){
+	    throw new Exception($msg);
+	}
 }
