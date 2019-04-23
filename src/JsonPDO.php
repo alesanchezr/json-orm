@@ -216,6 +216,11 @@ class JsonPDO{
     function getAllContent(){
         return $this->dataContent;   
     }
+	
+    
+    function getAllFiles(){
+        return $this->dataFiles;   
+    }
     
     function throwError($msg){
 	    throw new Exception($msg);
