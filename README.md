@@ -45,6 +45,12 @@ $someData = [ "ve" => "venezuela" ];
 $file = $orm->toNewFile('countries');
 $file->save($content);
 
+//check if a json file exists
+$exists = $orm->jsonExists('countries');
+
+//if there are several json files, you can list them all
+$allFiles = $orm->getAllFiles();
+
 //delete a json file
 $orm->deleteFile('countries');
 
